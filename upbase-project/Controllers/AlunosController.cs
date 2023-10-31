@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using upbase_project.Models;
 using upbase_project.Repository.Interfaces;
 
@@ -14,14 +15,26 @@ public class AlunosController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult PostAluno([FromBody] Aluno aluno)
+    public IActionResult InserirAluno([FromBody] Aluno aluno)
     {
-        if (aluno != null)
+        var emailRegex = new Regex(@"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$");
+        if (!emailRegex.IsMatch(aluno.Email))
         {
-            _repository.InserirAluno(aluno);
-            return Ok("Aluno cadastrado com sucesso");
+            return BadRequest("Formato de email inválido");
         }
 
-        return BadRequest("Erro no cadastro do aluno");
+        var existEmail = _repository.GetAll().FirstOrDefault(a => a.Email == aluno.Email);
+        if (existEmail != null)
+        {
+            return Conflict("Email já cadastrado!");
+        }
+
+        if (aluno != null) 
+        {
+            _repository.InserirAluno(aluno);
+            return Ok("Aluno cadastrado com sucesso!");
+        }
+
+        return BadRequest("Erro no cadastro do aluno!");
     }
 }

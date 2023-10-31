@@ -10,6 +10,10 @@ namespace upbase_project.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "O campo {0} deve ser preenchido")]
-        public string Nome {  get; set; }
+        public string Name {  get; set; }
+
+        public string Email {  get; set; }
+
+        public string Password { get; set; }
     }
 }

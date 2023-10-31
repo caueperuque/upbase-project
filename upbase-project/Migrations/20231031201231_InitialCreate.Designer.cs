@@ -10,8 +10,8 @@ using upbase_project.Context;
 namespace upbase_project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231031012828_initial")]
-    partial class initial
+    [Migration("20231031201231_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,15 @@ namespace upbase_project.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 

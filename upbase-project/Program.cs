@@ -1,23 +1,36 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 using upbase_project.Context;
 using upbase_project.Repository.Interfaces;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionStringMySql = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(option => option.UseMySql(
-        connectionStringMySql,
-        ServerVersion.Parse("8.2.0-MySQL")
-        )
+       connectionStringMySql,
+       ServerVersion.Parse("8.0.33-MySQL")
+       )
 );
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "API p/ cadastro de alunos",
+        Description = "Uma API simples para cadastro de alunos",
+        Contact = new OpenApiContact
+        {
+            Name = "Cauê Peruque",
+            Email = "caue19052003@gmail.com",
+            Url = new Uri("https://caue.webmenu.dev")
+        }
+    });
+});
 builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
 
@@ -29,7 +42,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API p/ cadastro de alunos");
     });
 }
 
