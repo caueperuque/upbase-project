@@ -10,8 +10,8 @@ using upbase_project.Context;
 namespace upbase_project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231031201231_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231031225907_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
